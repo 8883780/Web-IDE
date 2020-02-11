@@ -48,6 +48,7 @@ Class WoWConfig {
      *      type - Realm type (can be SERVER_MANGOS or SERVER_TRINITY, depends on your server core. Note that this is a constant!)
      * You can create unlimited realms
 	 * Warning! WoWConfig::$Realms array size MUST BE equal to DatabaseConfig::$world and DatabaseConfig::$characters size!
+     *服务器 名字和类型
      **/
     public static $Realms = array(
         1 => array(
