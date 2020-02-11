@@ -23,7 +23,7 @@ Class DatabaseConfig {
     public static $MySQLExtension = 'mysqli'; // 'mysql' or 'mysqli'
 
     /**
-     * World database configuration.
+     * 配置游戏世界库.
      * @access public
      **/
     public static $world = array(
@@ -36,7 +36,7 @@ Class DatabaseConfig {
     );
     
     /**
-     * Characters databases configuration.
+     * 游戏角色库设置.
      * Primary key (1, 2, etc.) is RealmID.
      * @access public
      **/
@@ -52,7 +52,7 @@ Class DatabaseConfig {
     );
     
     /**
-     * Realms & accounts database configuration.
+     * 账号库配置.
      * @access public
      **/
     public static $realm = array(
@@ -65,7 +65,7 @@ Class DatabaseConfig {
     );
     
     /**
-     * WoW database configuration.
+     * 网站数据库设置.
      * @access public
      **/
     public static $wow = array(
