@@ -1,0 +1,7 @@
+1、添加页面
+             E:\phpStudy\www\includes\classes\class.layout.php 添加CSS 添加网站的标题
+             E:\phpStudy\www\includes\templates\wow\wow_page_index.php 顶部添加JS
+             E:\phpStudy\www\includes\controllers\wow\总页面名字 添加页面和导航
+2、修复网站数据库结构问题导致的数据等不能正常显示问题
+   打开E:\phpStudy\www\webroot\_debug\tmp.dbg查看报错原因，对应位置修复代码就行
+   
