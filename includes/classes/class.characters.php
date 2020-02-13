@@ -492,8 +492,6 @@ Class WoW_Characters /*implements Interface_Characters*/ {
             `characters`.`class`,
             `characters`.`gender`,
             `characters`.`level`,
-            `characters`.`playerBytes`,
-            `characters`.`playerBytes2`,
             `characters`.`playerFlags`,
             `characters`.`totalKills`,
             `characters`.`chosenTitle`,
@@ -501,8 +499,8 @@ Class WoW_Characters /*implements Interface_Characters*/ {
             `characters`.`power1`,
             `characters`.`power2`,
             `characters`.`power3`,
-            `characters`.`specCount`,
-            `characters`.`activeSpec`,
+            `characters`.`talentGroupsCount` AS `specCount`,
+            `characters`.`activeTalentGroup` AS `activeSpec`,
             `characters`.`equipmentCache`,
             `guild_member`.`guildid` AS `guildId`,
             `guild`.`name` AS `guildName`
@@ -603,7 +601,12 @@ Class WoW_Characters /*implements Interface_Characters*/ {
             WoW_Log::WriteError('%s : character was not found.', __METHOD__);
             return false;
         }
+		if(self::GetServerType() == SERVER_TRINITY) {
+        self::$talents = DB::Characters()->select("SELECT `guid`, `spell`, `talentGroup` AS `spec` FROM `character_talent` WHERE `guid` = %d", self::GetGUID());
+		}
+		else{
         self::$talents = DB::Characters()->select("SELECT * FROM `character_talent` WHERE `guid` = %d", self::GetGUID());
+		}
         if(!self::$talents) {
             WoW_Log::WriteError('%s : unable to load talents for character %s (GUID: %d)!', __METHOD__, self::GetName(), self::GetGUID());
             return false;
@@ -635,11 +638,11 @@ Class WoW_Characters /*implements Interface_Characters*/ {
                     'BStyle' => $team['BorderStyle'],
                     'BColor' => dechex($team['BorderColor'] - 255),
                     'rating' => $team['rating'],
-                    'games_week' => $team['games_week'],
-                    'wins_week' => $team['wins_week'],
+                    'games_week' => $team['weekGames'],
+                    'wins_week' => $team['weekWins'],
                     'lost_week' => $team['lost_week'],
-                    'games_season' => $team['games_season'],
-                    'wins_season' => $team['wins_season'],
+                    'games_season' => $team['seasonGames'],
+                    'wins_season' => $team['seasonWins'],
                     'lost_season' => $team['lost_season'],
                     'personal_rating' => 0,
                     'rank' => $team['rank']
@@ -681,30 +684,23 @@ Class WoW_Characters /*implements Interface_Characters*/ {
         self::$pvp_data = DB::Characters()->select("
         SELECT
         a.*,
-        b.rating,
-        b.games_week,
-        b.wins_week,
-        b.games_season,
-        b.wins_season,
-        b.games_week-b.wins_week AS lost_week,
-        b.games_season-b.wins_season AS lost_season,
-        b.rank,
+        a.weekGames-a.weekWins AS lost_week,
+        a.seasonGames-a.seasonWins AS lost_season,
         c.guid,
-        c.played_week,
-        c.wons_week,
-        c.played_season,
-        c.wons_season,
-        c.played_week-c.wons_week AS lost_week_personal,
-        c.played_season-c.wons_season AS lost_season_personal,
-        c.personal_rating,
+        c.weekGames as played_week,
+        c.weekWins as wons_week,
+        c.seasonGames as played_season,
+        c.seasonWins as wons_season,
+        c.weekGames-c.weekWins AS lost_week_personal,
+        c.seasonGames-c.seasonWins AS lost_season_personal,
+        c.personalRating as personal_rating,
         d.name AS charName,
         d.race,
         d.class,
         d.gender,
         d.level
         FROM arena_team        AS a
-        JOIN arena_team_stats  AS b ON b.arenateamid = a.arenateamid
-        JOIN arena_team_member AS c ON c.arenateamid = a.arenateamid
+        JOIN arena_team_member AS c ON c.arenaTeamId = a.arenaTeamId
         JOIN characters        AS d ON d.guid = c.guid
         WHERE c.guid = %d", self::GetGUID());
         return true;
