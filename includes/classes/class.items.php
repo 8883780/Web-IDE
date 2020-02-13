@@ -1118,7 +1118,7 @@ Class WoW_Items {
     }
 
     public function GetItemSource($entry) {
-        $source_info = DB::WoW()->selectRow("SELECT `source`, `areaKey` FROM `DBPREFIX_item_sources` WHERE `item` = %d", $entry);
+        $source_info = DB::WoW()->selectRow("SELECT `source`, `areaKey` FROM `DBPREFIX_sources` WHERE `item` = %d", $entry);
         if(!$source_info) {
             return false;
         }
