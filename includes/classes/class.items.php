@@ -22,7 +22,7 @@ Class WoW_Items {
     
     public function GetItemName($entry) {
         if(Wow_Locale::GetLocale() == 'en') {
-            $itemName = DB::World()->selectCell("SELECT `name` FROM `item_template` WHERE `entry` = %d LIMIT 1", $entry);
+            $itemName = DB::World()->selectCell("SELECT `Name` FROM `item_template_locale` WHERE `ID`=%d AND `locale` = 'zhCN'", $entry);
         }
         else {
             $itemName = DB::World()->selectCell("SELECT `name_loc%d` FROM `locales_item` WHERE `entry` = %d LIMIT 1", Wow_Locale::GetLocaleID(), $entry);
