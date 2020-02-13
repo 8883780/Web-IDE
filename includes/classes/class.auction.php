@@ -58,7 +58,7 @@ class WoW_Auction {
     }
     
     private static function LoadMyAuctions() {
-        self::$myitems_storage = DB::Characters()->select("SELECT * FROM `auction` WHERE `itemowner` = %d", self::$active_guid);
+        self::$myitems_storage = DB::Characters()->select("SELECT * FROM `auctionhouse` WHERE `itemowner` = %d", self::$active_guid);
     }
     
     private static function LoadAuctionMails() {
