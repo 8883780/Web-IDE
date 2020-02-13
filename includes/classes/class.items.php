@@ -1163,17 +1163,17 @@ Class WoW_Items {
             case 'sourceType.creatureDrop':
                 $source_info = DB::World()->selectRow("
                 SELECT
-                `a`.`entry` AS `npcId`,
+                `a`.`Entry` AS `npcId`,
                 `b`.`name`,
                 %s
-                FROM
-                LEFT JOIN `creature_template` AS `b` ON `b`.`entry` = `a`.`entry`
+                FROM `creature_loot_template` AS `a`
+                LEFT JOIN `creature_template` AS `b` ON `b`.`entry` = `a`.`Entry`
                 %s
                 WHERE
                 `b`.`item` = %d
                 LIMIT 1",
                     (WoW_Locale::GetLocale() != LOCALE_EN ? '`c`.`name_loc`' . WoW_Locale::GetLocaleId() . '` AS `name_loc`' : 'NULL'),
-                    (WoW_Locale::GetLocale() != LOCALE_EN ? 'LEFT JOIN `locale_creature` AS `c` ON `c`.`entry` = `a`.`entry`' : null),
+                    (WoW_Locale::GetLocale() != LOCALE_EN ? 'LEFT JOIN `locale_creature` AS `c` ON `c`.`entry` = `a`.`Entry`' : null),
                     $entry
                 );
                 if($source_info && WoW_Locale::GetLocale() != LOCALE_EN && $source_info['name_loc'] != null) {
